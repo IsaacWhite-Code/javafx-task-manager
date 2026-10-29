@@ -1,25 +1,26 @@
 # JavaFX Task Manager
 
-A desktop task management application built with Java and JavaFX. This project is an opportunity to practice object-oriented programming, graphical user interface development, and software engineering fundamentals.
+A desktop task management application built with Java and JavaFX. I built it to practice object-oriented design, graphical user interface development, and software engineering fundamentals.
 
 ## Features
 
-- **Add Tasks:** Create new tasks by entering a title.
-- **View Tasks:** Display tasks in an interactive list.
-- **Complete Tasks:** Select a task and mark it as completed.
-- **Task Management:** Organize task-related functionality using separate Java classes and interfaces.
+- **Add tasks:** Enter a title to create a task. Empty or whitespace-only titles are ignored.
+- **Complete tasks:** Select a task and mark it completed. Completed tasks display with a checkmark.
+- **Delete tasks:** Select a task and remove it from the list.
+- **Hide completed tasks:** Use the checkbox to show only incomplete tasks.
+- **Duplicate-safe:** Tasks are tracked as objects, so tasks that share a title are handled independently.
 
 ## Technologies Used
 
-- **Java** — Application logic and object-oriented programming.
-- **JavaFX** — Desktop graphical user interface.
-- **FXML** — Defines the layout of the application interface.
-- **Maven** — Project configuration and dependency management.
-- **Git and GitHub** — Version control and source code hosting.
+- **Java:** Application logic and object-oriented design
+- **JavaFX:** Desktop graphical user interface
+- **FXML:** Interface layout
+- **Maven:** Project configuration and dependency management
+- **Git and GitHub:** Version control and source code hosting
 
 ## Project Structure
 
-```text
+```
 javafx-task-manager/
 ├── pom.xml
 ├── .gitignore
@@ -40,30 +41,34 @@ javafx-task-manager/
                     └── primary.fxml
 ```
 
-
 ## How It Works
 
-The application uses a `Task` class to represent individual tasks, including their titles, priorities, and completion status.
-
-The `TaskManager` class handles task-related operations, while `TaskInterface` defines the operations that the task manager supports.
-
-The JavaFX interface allows users to enter tasks, view them in a list, and interact with them through buttons. The `PrimaryController` connects the interface to the application's task management logic.
+- **`Task`** represents a single task with a title, a priority value, and a completion status. Its fields are private, and a task can only change state through `markCompleted()`.
+- **`TaskInterface`** defines the operations a task manager must support: add, remove, complete, get all tasks, and get incomplete tasks.
+- **`TaskManager`** implements `TaskInterface` and stores tasks in an `ArrayList`.
+- **`PrimaryController`** connects the FXML interface to the task logic. It never changes task data directly. It calls the manager, then rebuilds the on-screen list from the manager's data so the two always stay in sync.
+- **`primary.fxml`** defines the layout: a text field, buttons, a filter checkbox, and the task list.
 
 ## Running the Project
 
-1. Install a compatible JDK.
-2. Install the Java extensions for Visual Studio Code.
+1. Install a compatible JDK and Apache Maven.
+2. Clone the repository:
+   ```
+   git clone https://github.com/IsaacWhite-Code/javafx-task-manager.git
+   ```
 3. Open the project folder containing `pom.xml`.
-4. Run the application using the JavaFX Maven configuration provided by the project.
+4. Run the application:
+   ```
+   mvn clean javafx:run
+   ```
 
 ## Future Improvements
 
-- Add the ability to delete tasks.
-- Improve the visual design of the interface.
-- Add task priorities and sorting.
-- Save tasks between application sessions.
-- Add automated tests for task management functionality.
+- Add automated unit tests for `TaskManager`
+- Save tasks between application sessions
+- Let users choose a task priority and sort by it
+- Improve the visual design of the interface
 
 ## Learning Goals
 
-This project is part of my ongoing development as a software engineer. I am using it to strengthen my Java skills, understand object-oriented design, build desktop applications, and gain experience with Git, GitHub, and Maven.
+This project is part of my ongoing development as a software engineer. I used it to strengthen my Java skills, practice object-oriented design, build a desktop application, and gain experience with Git, GitHub, and Maven.

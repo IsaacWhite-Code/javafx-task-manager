@@ -1,4 +1,3 @@
-
 package com.taskmanager;
 
 import javafx.scene.control.ListCell;
@@ -6,17 +5,19 @@ import javafx.scene.control.ListView;
 import javafx.util.Callback;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ListView;
+import javafx.scene.control.CheckBox;
+import java.util.List;
 
 public class PrimaryController {
 
     @FXML
     private TextField taskTitleField;
-
     @FXML
     private ListView<Task> taskListView;
-
+    @FXML
     private TaskManager taskManager = new TaskManager();
+    @FXML
+    private CheckBox hideCompletedBox;
 
     @FXML
     public void initialize() {
@@ -39,7 +40,20 @@ public class PrimaryController {
                 };
             }
         });
-    }   
+    }
+    
+    @FXML
+    private void refreshList() {
+        List<Task> tasksToShow;
+
+        if (hideCompletedBox.isSelected()) {
+            tasksToShow = taskManager.getIncompleteTasks();
+        } else {
+            tasksToShow = taskManager.getTasks();
+        }
+
+        taskListView.getItems().setAll(tasksToShow);
+    }
 
     @FXML
     private void addTask() {
@@ -49,14 +63,11 @@ public class PrimaryController {
             return;
         }
 
-        Task task = new Task(title.trim(), 1);
-        taskManager.addTask(task);
-
-        taskListView.getItems().add(task);
+        taskManager.addTask(new Task(title.trim(), 1));
         taskTitleField.clear();
+        refreshList();
     }
 
-    
     @FXML
     private void completeTask() {
         Task selectedTask = taskListView.getSelectionModel().getSelectedItem();
@@ -65,11 +76,27 @@ public class PrimaryController {
             return;
         }
 
-        boolean success = taskManager.completeTask(selectedTask.getTitle());
-
-        if (success) {
-            taskListView.refresh();
+        if (taskManager.completeTask(selectedTask)) {
+            refreshList();
         }
+    }
+
+    @FXML
+    private void deleteTask() {
+        Task selectedTask = taskListView.getSelectionModel().getSelectedItem();
+
+        if (selectedTask == null) {
+            return;
+        }
+
+        if (taskManager.removeTask(selectedTask)) {
+            refreshList();
+        }
+    }
+
+    @FXML
+    private void onFilterChanged() {
+        refreshList();
     }
 
 }

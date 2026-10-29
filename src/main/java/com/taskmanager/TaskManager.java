@@ -14,34 +14,22 @@ public class TaskManager implements TaskInterface {
     }
 
     @Override 
-    public boolean removeTask(String title){
-        Task currentTask;
-        for (int i = 0; i < tasks.size(); i++){
-            currentTask = tasks.get(i);
-            if (currentTask.getTitle().equals(title)){
-                tasks.remove(i);
-                return true;
-            }
-        }
-        return false; 
+    public boolean removeTask(Task task){
+        return tasks.remove(task);
     }
 
     @Override 
     public List<Task> getTasks(){
-        return tasks;
+        return new ArrayList<>(tasks);
     }
 
     @Override 
-    public boolean completeTask(String title){
-        Task currentTask;
-        for (int i = 0; i < tasks.size(); i++){
-            currentTask = tasks.get(i);
-            if (currentTask.getTitle().equals(title)){
-                currentTask.markCompleted();
-                return true;
-            }
+    public boolean completeTask(Task task){
+        if (task == null || !tasks.contains(task)){
+            return false;
         }
-        return false;
+        task.markCompleted();
+        return true;
     }
 
     @Override 
