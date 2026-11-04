@@ -1,15 +1,20 @@
 # Maven build output
 target/
 
-# Java compiled files
+# Your saved tasks (personal data)
+tasks.txt
+
+# Compiled classes
 *.class
 
-# VS Code settings
+# IDE and editor files
 .vscode/
-
-# IntelliJ settings
 .idea/
+*.iml
+.classpath
+.project
+.settings/
 
-# Operating system files
+# OS files
 .DS_Store
 Thumbs.db

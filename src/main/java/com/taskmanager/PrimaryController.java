@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.CheckBox;
 import java.util.List;
+import java.io.IOException;
+import java.nio.file.Paths;
 
 public class PrimaryController {
 
@@ -16,6 +18,8 @@ public class PrimaryController {
     private ListView<Task> taskListView;
     @FXML
     private TaskManager taskManager = new TaskManager();
+    @FXML
+    private final TaskStorage storage = new TaskStorage(Paths.get("tasks.txt"));
     @FXML
     private CheckBox hideCompletedBox;
 
@@ -40,6 +44,39 @@ public class PrimaryController {
                 };
             }
         });
+
+        loadSavedTasks();
+
+        taskListView.sceneProperty().addListener((obsScene, oldScene, newScene) -> {
+            if (newScene != null) {
+                newScene.windowProperty().addListener((obsWindow, oldWindow, newWindow) -> {
+                    if (newWindow != null) {
+                        newWindow.setOnHidden(event -> saveTasks());
+                    }
+                });
+            }
+        });
+    }
+
+    @FXML
+    private void loadSavedTasks() {
+        try {
+            for (Task task : storage.load()) {
+                taskManager.addTask(task);
+            }
+        } catch (IOException e) {
+            System.out.println("Could not load tasks: " + e.getMessage());
+        }
+        refreshList();
+    }
+
+    @FXML
+    private void saveTasks() {
+        try {
+            storage.save(taskManager.getTasks());
+        } catch (IOException e) {
+            System.out.println("Could not save tasks: " + e.getMessage());
+        }
     }
     
     @FXML

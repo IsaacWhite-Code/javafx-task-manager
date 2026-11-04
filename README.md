@@ -1,6 +1,6 @@
 # JavaFX Task Manager
 
-A desktop task management application built with Java and JavaFX. I built it to practice object-oriented design, graphical user interface development, and software engineering fundamentals.
+A desktop task management application built with Java and JavaFX. I built it to practice object-oriented design, graphical user interface development, and file handling.
 
 ## Features
 
@@ -8,6 +8,7 @@ A desktop task management application built with Java and JavaFX. I built it to 
 - **Complete tasks:** Select a task and mark it completed. Completed tasks display with a checkmark.
 - **Delete tasks:** Select a task and remove it from the list.
 - **Hide completed tasks:** Use the checkbox to show only incomplete tasks.
+- **Saved between sessions:** Tasks are written to `tasks.txt` when the window closes and loaded again when the app starts.
 - **Duplicate-safe:** Tasks are tracked as objects, so tasks that share a title are handled independently.
 
 ## Technologies Used
@@ -34,7 +35,8 @@ javafx-task-manager/
         │           ├── PrimaryController.java
         │           ├── Task.java
         │           ├── TaskInterface.java
-        │           └── TaskManager.java
+        │           ├── TaskManager.java
+        │           └── TaskStorage.java
         └── resources/
             └── com/
                 └── taskmanager/
@@ -46,7 +48,8 @@ javafx-task-manager/
 - **`Task`** represents a single task with a title, a priority value, and a completion status. Its fields are private, and a task can only change state through `markCompleted()`.
 - **`TaskInterface`** defines the operations a task manager must support: add, remove, complete, get all tasks, and get incomplete tasks.
 - **`TaskManager`** implements `TaskInterface` and stores tasks in an `ArrayList`.
-- **`PrimaryController`** connects the FXML interface to the task logic. It never changes task data directly. It calls the manager, then rebuilds the on-screen list from the manager's data so the two always stay in sync.
+- **`TaskStorage`** saves tasks to a tab-separated text file and loads them back, skipping any corrupted lines.
+- **`PrimaryController`** connects the FXML interface to the task logic. It calls the manager, then rebuilds the on-screen list from the manager's data so the two stay in sync.
 - **`primary.fxml`** defines the layout: a text field, buttons, a filter checkbox, and the task list.
 
 ## Running the Project
@@ -62,11 +65,13 @@ javafx-task-manager/
    mvn clean javafx:run
    ```
 
+Your tasks are saved to a `tasks.txt` file in the folder you run the app from.
+
 ## Future Improvements
 
-- Add automated unit tests for `TaskManager`
-- Save tasks between application sessions
+- Add automated unit tests
 - Let users choose a task priority and sort by it
+- Add due dates
 - Improve the visual design of the interface
 
 ## Learning Goals
